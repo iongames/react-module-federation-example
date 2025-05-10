@@ -14,43 +14,43 @@ module.exports = {
     },
     watchOptions: { ignored: ['**/node_modules/**', '**/@mf-types/**'] },
     devServer: {
-        port: 3001,
         hot: true,
+        historyApiFallback: true,
+        port: 3001,
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
             'Access-Control-Allow-Headers': '*',
         },
-        historyApiFallback: true,
     },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
         },
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.css'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     },
     plugins: [
         new ModuleFederationPlugin({
             name: 'remote_app',
             filename: 'remote_app_entry.js',
+            // remotes: {
+            //     remote_app: 'remote_app@http://localhost:3001/mf-manifest.json',
+            // },
             exposes: {
+                // Set the modules to be exported, default export as '.'
                 '.': './src/app',
             },
             shared: {
                 react: {
                     singleton: true,
-                    eager: true,
                 },
                 'react-dom': {
                     singleton: true,
-                    eager: true,
                 },
             },
         }),
         new Dotenv(),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-        }),
+        new MiniCssExtractPlugin(),
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'index.html'),
             publicPath: '/',
@@ -95,5 +95,6 @@ module.exports = {
                 css: true,
             }),
         ],
+        // runtimeChunk: 'single', enables hot reload for remote app
     },
 }

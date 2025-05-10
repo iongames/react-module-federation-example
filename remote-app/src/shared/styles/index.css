@@ -4,7 +4,7 @@
 
 @theme {
     /* colors */
-    --color-primary: #1c398e;
+    --color-primary: #000000;
     --color-primary-foreground: hsl(210 40% 98%);
 
     --color-secondary: hsl(210 40% 96.1%);
